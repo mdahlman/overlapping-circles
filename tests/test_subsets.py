@@ -1,5 +1,5 @@
 import pytest
-from overlapping_circles.main import generate_subsets, label_subsets
+from overlapping_circles.subsets import generate_subsets, label_subsets
 
 
 def test_generate_subsets_3():
