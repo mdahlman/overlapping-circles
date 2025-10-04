@@ -3,7 +3,7 @@ import numpy as np
 from itertools import product
 import string
 from overlapping_circles.subsets import label_subsets
-from overlapping_circles.arrangement import Circle, build_arrangement
+from overlapping_circles.arrangement import Circle, regions_for_arrangement
 
 
 def generate_circle(x, y, r=1.0, points=200) -> tuple[np.ndarray, np.ndarray]:
@@ -29,25 +29,28 @@ def demo_three_circles():
 
 def demo_three():
     circles = [
-        Circle(0, 0, 1.0),
-        Circle(1, 0, 1.0),
+        Circle(0.0, 0.0, 1.0),
+        Circle(1.0, 0.0, 1.0),
         Circle(0.5, 0.866, 1.0),
     ]
-    _, _, faces = build_arrangement(circles)
-    print(f"Arrangement has {len(faces)} faces.")
-    for i, face in enumerate(faces):
-        print(f"Face {i}: bitmask={face.bitmask}, edges={len(face.boundary)}")
+
+    regions = regions_for_arrangement(circles)
+    for mask, region in regions.items():
+        if not region.is_empty:  # type: ignore
+            print(mask, "→", type(region).__name__)
+        else:
+            print(mask, "→ EmptySet")
 
 
 def main():
     # demo_three()
-    demo_three()
+    # demo_three()
 
-    # demo_three_circles()
-    # subsets = label_subsets(3)
-    # print("Subsets for 3 circles:")
-    # for mask, label in subsets.items():
-    #     print(f"  {mask}: {label}")
+    demo_three_circles()
+    subsets = label_subsets(3)
+    print("Subsets for 3 circles:")
+    for mask, label in subsets.items():
+        print(f"  {mask}: {label}")
 
 
 if __name__ == "__main__":
