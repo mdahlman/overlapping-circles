@@ -90,7 +90,7 @@ def _bitmask_region(bits: str, disks: List[Set], ambient: Optional[Set]) -> Set:
     Build the region for a bitmask using disk sets (not circle boundaries).
     - '1' → inside the corresponding disk
     - '0' → outside that disk
-    For the all-zero mask, return ambient - Union(disks). If ambient is None, return EmptySet.
+    For the all-zero mask, return ambient ∖ Union(disks). If ambient is None, return EmptySet.
     """
     inside: List[Set] = []
     outside: List[Set] = []
@@ -121,7 +121,7 @@ def regions_for_arrangement(
 ) -> Dict[str, Set]:
     """
     Compute geometric region(s) for each bitmask using *disk* regions.
-    - If include_outside=True, the 000... mask is returned as (ambient - Union(disks)).
+    - If include_outside=True, the 000... mask is returned as (ambient ∖ Union(disks)).
       If ambient is not provided, a rectangular ProductSet is generated automatically.
     - If include_outside=False, the 000... mask is returned as EmptySet by design.
 

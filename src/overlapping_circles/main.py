@@ -44,13 +44,13 @@ def demo_three():
 
 def main():
     # demo_three()
-    # demo_three()
+    demo_three()
 
-    demo_three_circles()
-    subsets = label_subsets(3)
-    print("Subsets for 3 circles:")
-    for mask, label in subsets.items():
-        print(f"  {mask}: {label}")
+    # demo_three_circles()
+    # subsets = label_subsets(3)
+    # print("Subsets for 3 circles:")
+    # for mask, label in subsets.items():
+    #     print(f"  {mask}: {label}")
 
 
 if __name__ == "__main__":
