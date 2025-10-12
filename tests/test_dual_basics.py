@@ -16,7 +16,7 @@ def test_fixed_code_monotonic():
         },
     )
     code = d._mask_struct_code_fixed_labels()
-    assert code.startswith("N=2|M=0,1,2,3|E1_in[".replace("[", "=")), code
+    assert code.startswith("V:00,01,10,11|E1_in:["), code
 
 
 def test_label_invariant_stability():
