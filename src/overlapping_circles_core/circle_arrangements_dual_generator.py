@@ -120,6 +120,12 @@ class Dual:
             for v, lbl in neis:
                 mu, mv = self.masks[u], self.masks[v]
                 bit = 1 << (lbl - 1)
+                if (mu ^ mv) != bit:
+                    raise AssertionError(
+                        f"flip rule fails on edge ({u},{v},{lbl}) "
+                        f"with {mu:0{self.N}b} vs {mv:0{self.N}b}; "
+                        f"mu^mv={(mu^mv):0{self.N}b}, bit={bit:0{self.N}b}"
+                    )
                 assert (
                     mu ^ mv == bit
                 ), f"mask flip rule fails on edge ({u},{v},{lbl}) with {mu:0{self.N}b} vs {mv:0{self.N}b}"
@@ -447,21 +453,27 @@ def build_n3_cross_only_c2(side_c1: int) -> Dual:
 
 
 def build_n3_venn() -> Dual:
-    masks = {i: i for i in range(8)}
+    # Regions 0..7 mapped to masks 000..111
+    masks: Dict[int, int] = {i: i for i in range(8)}
     adj: Dict[int, List[Tuple[int, int]]] = {i: [] for i in masks}
 
-    def add(u, v, lbl):
-        adj.setdefault(u, []).append((v, lbl))
-        adj.setdefault(v, []).append((u, lbl))
+    def add(u: int, v: int, lbl: int) -> None:
+        adj[u].append((v, lbl))
+        adj[v].append((u, lbl))
 
-    for lbl in (1, 2, 3):
-        bit = 1 << (lbl - 1)
-        for m in range(8):
-            n = m ^ bit
-            if m < n:
-                add(m, n, lbl)
+    # Wire edges purely by mask XOR: single-bit flips only
+    ids = list(masks.keys())
+    for i in range(len(ids)):
+        for j in range(i + 1, len(ids)):
+            u, v = ids[i], ids[j]
+            diff = masks[u] ^ masks[v]
+            # keep only Hamming distance 1
+            if diff and (diff & (diff - 1)) == 0:  # power of two
+                lbl = diff.bit_length()  # 1 for 001, 2 for 010, 3 for 100
+                add(u, v, lbl)
+
     G = Dual(N=3, masks=masks, adj=adj)
-    G.validate()
+    G.validate()  # must pass: every edge toggles exactly its label bit
     return G
 
 

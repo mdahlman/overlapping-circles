@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pytest
-from overlapping_circles.dual import Dual
-from overlapping_circles.canon import canonical_code_label_invariant
+from overlapping_circles_core.dual import Dual
+from overlapping_circles_core.canon import canonical_code_label_invariant
 
 
 def test_fixed_code_monotonic():
@@ -15,8 +15,8 @@ def test_fixed_code_monotonic():
             3: [(1, 2), (2, 1)],
         },
     )
-    code = d.to_mask_struct_code_fixed_labels()
-    assert code.startswith("N=2|M=0,1,2,3|L1=["), code
+    code = d._mask_struct_code_fixed_labels()
+    assert code.startswith("N=2|M=0,1,2,3|E1_in[".replace("[", "=")), code
 
 
 def test_label_invariant_stability():
@@ -33,7 +33,7 @@ def test_label_invariant_stability():
     canon = canonical_code_label_invariant(d)
     swapped = Dual(
         N=2,
-        masks={0: 0, 1: 2, 2: 1, 3: 3},  # swap mask bits 1<->2
+        masks={0: 0, 1: 2, 2: 1, 3: 3},
         adj={
             0: [(1, 2), (2, 1)],
             1: [(0, 2), (3, 1)],

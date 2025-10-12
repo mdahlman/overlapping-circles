@@ -1,6 +1,6 @@
 import pytest
 from sympy import sqrt, S, EmptySet, Union
-from overlapping_circles.arrangement import Circle, regions_for_arrangement
+from overlapping_circles_core.arrangement import Circle, regions_for_arrangement
 
 
 @pytest.fixture

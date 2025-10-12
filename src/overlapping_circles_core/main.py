@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from itertools import product
 import string
-from overlapping_circles.subsets import label_subsets
-from overlapping_circles.arrangement import Circle, regions_for_arrangement
+from overlapping_circles_core.subsets import label_subsets
+from overlapping_circles_core.arrangement import Circle, regions_for_arrangement
 
 
 def generate_circle(x, y, r=1.0, points=200) -> tuple[np.ndarray, np.ndarray]:

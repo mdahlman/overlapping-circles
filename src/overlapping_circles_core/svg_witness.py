@@ -4,8 +4,6 @@ import math
 
 from .dual import Dual
 
-SVG = str
-
 
 def _svg_header(w: int, h: int) -> str:
     return f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">\n'
@@ -15,12 +13,8 @@ def _svg_footer() -> str:
     return "</svg>\n"
 
 
-def render_dual_svg(d: Dual, *, w: int = 800, h: int = 600) -> SVG:
-    """Topological witness: draw the *dual graph* with labeled edges.
-    Deterministic layout: nodes on a circle; edges straight; labels on midpoints.
-    This is always available and printable.
-    """
-    R = d.regions()
+def render_dual_svg(d: Dual, *, w: int = 800, h: int = 600) -> str:
+    R = sorted(d.masks.keys())
     n = len(R)
     cx, cy = w // 2, h // 2
     rad = int(0.45 * min(w, h))
@@ -33,15 +27,15 @@ def render_dual_svg(d: Dual, *, w: int = 800, h: int = 600) -> SVG:
     out.append('<rect x="0" y="0" width="100%" height="100%" fill="white"/>')
 
     # edges
-    for u, v, lbl in d.edges():
-        x1, y1 = pos[u]
-        x2, y2 = pos[v]
+    for e in d.edges():
+        x1, y1 = pos[e.u]
+        x2, y2 = pos[e.v]
         out.append(
             f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="black" stroke-width="1"/>'
         )
         mx, my = (x1 + x2) / 2, (y1 + y2) / 2
         out.append(
-            f'<text x="{mx:.1f}" y="{my:.1f}" font-size="10" fill="blue">{lbl}</text>'
+            f'<text x="{mx:.1f}" y="{my:.1f}" font-size="10" fill="blue">{e.lbl}</text>'
         )
 
     # nodes
@@ -64,10 +58,7 @@ def render_dual_svg(d: Dual, *, w: int = 800, h: int = 600) -> SVG:
 
 def render_circles_svg(
     circles: List[Tuple[float, float, float]], *, w: int = 800, h: int = 600
-) -> SVG:
-    """Render a list of Euclidean circles (cx, cy, r) as an SVG.
-    This is a geometry witness *if* you have a construction that supplies circles.
-    """
+) -> str:
     out = [_svg_header(w, h)]
     out.append('<rect x="0" y="0" width="100%" height="100%" fill="white"/>')
     for i, (cx, cy, r) in enumerate(circles, start=1):
