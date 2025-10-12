@@ -288,54 +288,15 @@ def build_n3_venn() -> Dual:
     return G
 
 
-def enumerate_all_n3_from_overlap(log: bool = False) -> List[Dual]:
-    candidates: List[Tuple[str, Dual]] = []
-    # disjoint/nested based on host region
-    for host, name in [
-        (0, "disjoint"),
-        (1, "nested_01"),
-        (2, "nested_10"),
-        (3, "nested_11"),
-    ]:
-        candidates.append((name, build_n3_disjoint_or_nested(host)))
-    # cross‑only
-    for side in (0, 1):
-        candidates.append((f"cross_C1_sideC2={side}", build_n3_cross_only_c1(side)))
-        candidates.append((f"cross_C2_sideC1={side}", build_n3_cross_only_c2(side)))
-    # venn
-    candidates.append(("venn", build_n3_venn()))
-
-    if log:
-        print(f"[pre-dedup] generated ({len(candidates)} candidates):")
-        for tag, g in candidates:
-            print(f" - {tag}: {g.canonical_code()}")
-
-    dedup: Dict[str, Dual] = {}
-    for _tag, g in candidates:
-        key = g.label_invariant_mask_struct_code()
-        dedup[key] = g
-
-    if log:
-        print(f"[post-dedup] unique ({len(dedup)}):")
-        for k in sorted(dedup):
-            print(f" - {k}")
-
-    return [dedup[k] for k in sorted(dedup)]
-
-
 def enumerate_all_n3_generic(log: bool = False) -> List[Dual]:
     n2 = enumerate_N2_from_N1()
     out: Dict[str, Dual] = {}
     cands: List[Dual] = []
-    for G2 in n2:
-        exps = expand_generically(G2)
-        if log:
-            print(f"{G2.canonical_code()} → {len(exps)} expansions")
-        cands.extend(exps)
     if log:
-        print("\n[pre-dedup] N=3 candidate canonical codes:")
-        for H in cands:
-            print(H.canonical_code())
+        print(f"\n[pre-dedup] N=3 candidate canonical codes:")
+    for G2 in n2:
+        exps = expand_generically(G2, log=log)
+        cands.extend(exps)
     for H in cands:
         out.setdefault(H.canonical_code(), H)
     if log:
@@ -349,19 +310,19 @@ def main():
     args = parser.parse_args()
 
     # --- N = 1 ---
-    print("N=1 base arrangement (canonical code):")
+    print("N=1 base arrangement (count: 1)")
     G1 = dual_N1()
     print(G1.canonical_code())
 
     # --- N = 2 ---
-    print("\nEnumerated N=2 arrangements (canonical codes):")
     all_n2 = enumerate_N2_from_N1()
+    print(f"\nEnumerated N=2 arrangements (count: {len(all_n2)})")
     for G2 in all_n2:
         print(G2.canonical_code())
 
     # --- N = 3 ---
-    print("\nEnumerated N=3 arrangements (canonical codes):")
     all_n3 = enumerate_all_n3_generic(log=args.log)
+    print(f"\nEnumerated N=3 arrangements (count: {len(all_n3)})")
     for G3 in all_n3:
         print(G3.canonical_code())
 

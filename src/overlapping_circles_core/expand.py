@@ -368,12 +368,14 @@ def insert_circle_along_region_cycle(d: Dual, cycle: List[int]) -> Dual:
     return Gnew
 
 
-def expand_generically(d: Dual) -> List[Dual]:
+def expand_generically(d: Dual, log: bool = False) -> List[Dual]:
     """Enumerate all N+1 expansions by inserting a new circle along:
     - every single region (zero-cross),
     - every undirected edge as a 2-cycle (two-cross),
     - every simple region cycle (multi-cross)."""
     assert d.boundary is not None, "expand_generically requires d.boundary"
+
+    candidate_idx = 1
 
     # zero-cross on each region
     cycles: List[List[int]] = [[r] for r in sorted(d.masks.keys())]
@@ -397,6 +399,11 @@ def expand_generically(d: Dual) -> List[Dual]:
     for cyc in cycles:
         try:
             H = insert_circle_along_region_cycle(d, cyc)
+            if log:
+                print(
+                    f"{candidate_idx}  cycle {cyc}:\n   {H.current_code()}\n → {H.canonical_code()}"
+                )
+                candidate_idx += 1
             results.setdefault(H.canonical_code(), H)
         except AssertionError:
             continue
