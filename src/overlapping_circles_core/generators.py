@@ -326,14 +326,20 @@ def enumerate_all_n3_from_overlap(log: bool = False) -> List[Dual]:
 def enumerate_all_n3_generic(log: bool = False) -> List[Dual]:
     n2 = enumerate_N2_from_N1()
     out: Dict[str, Dual] = {}
+    cands: List[Dual] = []
     for G2 in n2:
         exps = expand_generically(G2)
         if log:
             print(f"{G2.canonical_code()} → {len(exps)} expansions")
-        for H in exps:
-            out.setdefault(H.canonical_code(), H)
+        cands.extend(exps)
     if log:
-        print(f"[post-dedup] unique N=3: {len(out)}")
+        print("\n[pre-dedup] N=3 candidate canonical codes:")
+        for H in cands:
+            print(H.canonical_code())
+    for H in cands:
+        out.setdefault(H.canonical_code(), H)
+    if log:
+        print(f"\n[post-dedup] unique N=3: {len(out)}")
     return [out[k] for k in sorted(out)]
 
 

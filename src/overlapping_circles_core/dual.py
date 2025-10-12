@@ -4,10 +4,15 @@ from typing import Dict, List, Tuple, Iterable, Optional, Set, FrozenSet
 import itertools
 import collections
 import argparse
+import re
 
 Mask = int
 EdgeLabel = int
 RegionId = int
+
+
+def _bitstr(x: int, N: int) -> str:
+    return format(x, f"0{N}b")
 
 
 @dataclass(frozen=True)
@@ -42,7 +47,7 @@ class Dual:
     # ---- inexpensive helpers / inspectors (verbatim behavior) ----
     def _mask_struct_code_fixed_labels(self) -> str:
         regions = sorted(self.masks)
-        header = f"N={self.N}|M={','.join(str(self.masks[r]) for r in regions)}"
+        header = "V:" + ",".join(_bitstr(self.masks[r], self.N) for r in perm_order)
 
         # Build labeled edge multisets in mask space
         in_edges: Dict[int, List[Tuple[int, int]]] = collections.defaultdict(list)
@@ -53,6 +58,11 @@ class Dual:
             for v, lbl in neis:
                 a, b = (u, v) if u <= v else (v, u)
                 counter[(a, b, lbl)] += 1
+
+        # Build region-ID based edge lists
+        # counter holds multiplicities of undirected edges
+        in_edges: Dict[int, List[str]] = collections.defaultdict(list)
+        out_edges: Dict[int, List[int]] = collections.defaultdict(list)
         for (a, b, lbl), cnt in counter.items():
             # each undirected edge must appear twice in adj
             mult = cnt // 2
@@ -60,20 +70,22 @@ class Dual:
                 continue
             if a == 0 or b == 0:
                 other = b if a == 0 else a
-                for _ in range(mult):
-                    out_edges[lbl].append(rmask[other])
+                out_edges[lbl].extend([other] * mult)
             else:
-                mu, mv = rmask[a], rmask[b]
-                lo, hi = (mu, mv) if mu <= mv else (mv, mu)
-                for _ in range(mult):
-                    in_edges[lbl].append((lo, hi))
+                a_in = (self.masks[a] >> (lbl - 1)) & 1
+                b_in = (self.masks[b] >> (lbl - 1)) & 1
+                if a_in == b_in:
+                    continue  # invalid edge for label; skip
+                inside, outside = (a, b) if a_in == 1 else (b, a)
+                in_edges[lbl].extend([f"{inside}-{outside}"] * mult)
         chunks = [header]
         for lbl in range(1, self.N + 1):
             ins = ";".join(
-                f"{u:0{self.N}b}-{v:0{self.N}b}"
-                for u, v in sorted(in_edges.get(lbl, []))
+                sorted(
+                    in_edges.get(lbl, []), key=lambda s: tuple(map(int, s.split("-")))
+                )
             )
-            outs = ";".join(f"{m:0{self.N}b}" for m in sorted(out_edges.get(lbl, [])))
+            outs = ";".join(str(x) for x in sorted(out_edges.get(lbl, [])))
             chunks.append(f"E{lbl}_in:[{ins}]")
             chunks.append(f"E{lbl}_out:[{outs}]")
         return "|".join(chunks)
@@ -103,6 +115,30 @@ class Dual:
             if best is None or code < best:
                 best = code
         assert best is not None
+
+        # Legacy-format postprocessing: convert mask bitstrings in edges to region IDs
+        # Expect header like "V:001,010,011,..."
+        if best and best.startswith("V:"):
+            head, *rest = best.split("|")
+            bitlist = head.split(":", 1)[1].split(",") if ":" in head else []
+            index_map = {
+                b: str(i + 1) for i, b in enumerate(bitlist)
+            }  # 1-based region IDs
+
+            def repl_pair(m):
+                a, b = m.group(1), m.group(2)
+                return f"{index_map.get(a, a)}-{index_map.get(b, b)}"
+
+            def repl_single(m):
+                a = m.group(1)
+                return index_map.get(a, a)
+
+            body = "|".join(rest)
+            # Replace pairs like 010-011 inside brackets
+            body = re.sub(r"([01]{%d})-([01]{%d})" % (self.N, self.N), repl_pair, body)
+            # Replace singles like [010;110]
+            body = re.sub(r"(?<=\[)([01]{%d})(?=[;\]])" % self.N, repl_single, body)
+            best = head + "|" + body if rest else head
         return best
 
     def with_boundary(
@@ -159,7 +195,9 @@ class Dual:
                 for idx, r in enumerate(perm_order, start=1):
                     rank[r] = idx
                 # rebuild code with fixed labels but canonical region order
-                header = f"N={self.N}|M={','.join(str(self.masks[r]) for r in [0] + perm_order)}"
+                header = "V:" + ",".join(
+                    _bitstr(self.masks[r], self.N) for r in perm_order
+                )
                 in_edges: Dict[int, List[Tuple[int, int]]] = collections.defaultdict(
                     list
                 )
@@ -207,6 +245,30 @@ class Dual:
 
         bt(0, [])
         assert best is not None
+
+        # Legacy-format postprocessing: convert mask bitstrings in edges to region IDs
+        # Expect header like "V:001,010,011,..."
+        if best and best.startswith("V:"):
+            head, *rest = best.split("|")
+            bitlist = head.split(":", 1)[1].split(",") if ":" in head else []
+            index_map = {
+                b: str(i + 1) for i, b in enumerate(bitlist)
+            }  # 1-based region IDs
+
+            def repl_pair(m):
+                a, b = m.group(1), m.group(2)
+                return f"{index_map.get(a, a)}-{index_map.get(b, b)}"
+
+            def repl_single(m):
+                a = m.group(1)
+                return index_map.get(a, a)
+
+            body = "|".join(rest)
+            # Replace pairs like 010-011 inside brackets
+            body = re.sub(r"([01]{%d})-([01]{%d})" % (self.N, self.N), repl_pair, body)
+            # Replace singles like [010;110]
+            body = re.sub(r"(?<=\[)([01]{%d})(?=[;\]])" % self.N, repl_single, body)
+            best = head + "|" + body if rest else head
         return best
 
     def canonical_code(self) -> str:
@@ -235,6 +297,30 @@ class Dual:
             if best is None or code < best:
                 best = code
         assert best is not None
+
+        # Legacy-format postprocessing: convert mask bitstrings in edges to region IDs
+        # Expect header like "V:001,010,011,..."
+        if best and best.startswith("V:"):
+            head, *rest = best.split("|")
+            bitlist = head.split(":", 1)[1].split(",") if ":" in head else []
+            index_map = {
+                b: str(i + 1) for i, b in enumerate(bitlist)
+            }  # 1-based region IDs
+
+            def repl_pair(m):
+                a, b = m.group(1), m.group(2)
+                return f"{index_map.get(a, a)}-{index_map.get(b, b)}"
+
+            def repl_single(m):
+                a = m.group(1)
+                return index_map.get(a, a)
+
+            body = "|".join(rest)
+            # Replace pairs like 010-011 inside brackets
+            body = re.sub(r"([01]{%d})-([01]{%d})" % (self.N, self.N), repl_pair, body)
+            # Replace singles like [010;110]
+            body = re.sub(r"(?<=\[)([01]{%d})(?=[;\]])" % self.N, repl_single, body)
+            best = head + "|" + body if rest else head
         return best
 
     # ---- derived ----
