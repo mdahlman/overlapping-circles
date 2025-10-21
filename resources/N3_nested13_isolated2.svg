@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="42.30835mm"
+   height="20mm"
+   viewBox="0 0 42.30835 20"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   sodipodi:docname="CANONICAL_N3_NESTED13_ISOLATED2.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="7.2105051"
+     inkscape:cx="79.95279"
+     inkscape:cy="37.792082"
+     inkscape:window-width="1440"
+     inkscape:window-height="852"
+     inkscape:window-x="2273"
+     inkscape:window-y="278"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-9.0312521,-71.208311)">
+    <circle
+       style="display:inline;fill:none;fill-opacity:0.33;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-dasharray:none;stroke-opacity:1;image-rendering:auto"
+       id="use6934"
+       cy="81.208313"
+       cx="19.031252"
+       r="9.8999996" />
+    <circle
+       style="display:inline;fill:none;fill-opacity:0.33;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-dasharray:none;stroke-opacity:1;image-rendering:auto"
+       id="use6936"
+       cy="81.208313"
+       cx="41.339603"
+       r="9.8999996" />
+    <circle
+       style="fill:none;fill-opacity:0.33;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-dasharray:none;stroke-opacity:1"
+       id="use6938"
+       cy="81.208328"
+       cx="19.03125"
+       r="7.0250001" />
+  </g>
+</svg>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="34.103073mm"
+   height="20.103073mm"
+   viewBox="0 0 34.103073 20.103073"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   sodipodi:docname="CANONICAL_N3_NESTED13_PAIR12.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="8.8049348"
+     inkscape:cx="64.452493"
+     inkscape:cy="37.99006"
+     inkscape:window-width="1520"
+     inkscape:window-height="846"
+     inkscape:window-x="2223"
+     inkscape:window-y="324"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-132.22763,-123.92346)">
+    <circle
+       style="display:inline;fill:none;fill-opacity:0.33;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-dasharray:none;stroke-opacity:1;image-rendering:auto"
+       id="use9901"
+       cy="134.02654"
+       cx="142.22763"
+       r="9.8999996" />
+    <circle
+       style="display:inline;fill:none;fill-opacity:0.33;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-dasharray:none;stroke-opacity:1;image-rendering:auto"
+       id="use9903"
+       cy="133.92346"
+       cx="156.3307"
+       r="9.8999996" />
+    <circle
+       style="display:inline;fill:none;fill-opacity:0.33;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-dasharray:none;stroke-opacity:1"
+       id="use9905"
+       cy="133.66232"
+       cx="140.12404"
+       r="3.6500001" />
+  </g>
+</svg>

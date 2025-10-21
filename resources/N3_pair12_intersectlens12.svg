@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="35mm"
+   height="20mm"
+   viewBox="0 0 35 20"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   sodipodi:docname="missing_1.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.8668254"
+     inkscape:cx="112.4794"
+     inkscape:cy="451.07123"
+     inkscape:window-width="976"
+     inkscape:window-height="1021"
+     inkscape:window-x="2305"
+     inkscape:window-y="152"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g11407" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-75.464583,-29.322942)">
+    <g
+       id="g11407"
+       transform="translate(-26.488489,-105.87706)">
+      <circle
+         style="display:inline;fill:none;fill-opacity:0.33;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-dasharray:none;stroke-opacity:1;image-rendering:auto"
+         id="use11399"
+         cy="145.2"
+         cx="126.95307"
+         r="9.8999996" />
+      <circle
+         style="display:inline;fill:none;fill-opacity:0.33;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-dasharray:none;stroke-opacity:1;image-rendering:auto"
+         id="use11401"
+         cy="145.2"
+         cx="111.95307"
+         r="9.8999996" />
+    </g>
+    <circle
+       style="display:inline;fill:none;fill-opacity:0.33;fill-rule:evenodd;stroke:#000000;stroke-width:0.231139;stroke-dasharray:none;stroke-opacity:1"
+       id="use11403"
+       cy="39.322945"
+       cx="92.964607"
+       r="4.2182903" />
+  </g>
+</svg>
